@@ -44,22 +44,27 @@ public class Login extends HttpServlet {
 		
 		DAO dao = new DAO();
 		String action = request.getParameter("action");
-		String email = request.getParameter("email");
+		String userEmail = request.getParameter("email");
 		
 		if(action != null) {
 			// validacija email-a
-			if(checkEmail(email)) {
+			if(checkEmail(userEmail)) {
+				// da li postoji user_email u bazi
+				if(!userExists(userEmail)) {
+				
+				dao.insertUser(userEmail);
 				
 				ArrayList<Item> item_list =  dao.selectAllItems();
 				HttpSession items_render_session = request.getSession();
 				items_render_session.setAttribute("item_list", item_list);
 				
-				User user_email = new User(email);
+				User user_email = new User(userEmail);
 				HttpSession user_session = request.getSession();
 				user_session.setAttribute("user_session", user_email);
 				user_session.setMaxInactiveInterval(600);
 				
 				response.sendRedirect("index.jsp");
+				}
 			}else {
 				String msg = "Must enter valid email!"; 
 				request.setAttribute("msg", msg);
@@ -68,6 +73,12 @@ public class Login extends HttpServlet {
 		}
 		
 	}
+	private boolean userExists(String userEmail) {
+		
+		return false;
+	}
+
+
 	///////////////////////////////////////////////////
 	public boolean checkEmail(String email) {
 		

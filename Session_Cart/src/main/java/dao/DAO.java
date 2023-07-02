@@ -20,6 +20,7 @@ public class DAO {
 	private static String SELECT_ALL_ITEMS = "SELECT * FROM items";
 	private static String SELECT_ITEM_BY_ID = "SELECT * FROM items WHERE item_id = ?";
 	private static String INSERT_CART = "INSERT INTO `cart` (`cart_items`) VALUES (?)";
+	private static String INSERT_USER = "INSERT INTO `users` (`user_email`) VALUES (?)";
 	
 	// DEFINICIJA KONSTRUKTORA ZA PODESAVNJE KONEKCIJE � UVEK ISTO
 	public DAO(){
@@ -135,5 +136,30 @@ public void insertCartItems(Array cartItems) {
 	
 }
 	
-	// DEFINICIJA OSTALIH METODA ... 
+	// DEFINICIJA OSTALIH METODA ...
+public void insertUser(String user_email) {
+	
+	Connection con = null;
+	PreparedStatement pstm = null;
+			
+        try {
+		con = ds.getConnection();
+		pstm = con.prepareStatement(INSERT_USER);
+
+		// DOPUNJAVANJE SQL STRINGA, SVAKI ? SE MORA PODESITI 
+		pstm.setString(1, user_email);
+		pstm.execute();
+
+	} catch (SQLException e) {
+		e.printStackTrace();
+	}
+	try {
+		con.close();
+	} catch (SQLException e) {
+		e.printStackTrace();
+	}
+	
+}
+
+
 }

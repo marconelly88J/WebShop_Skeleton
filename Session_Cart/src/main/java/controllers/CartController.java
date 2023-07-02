@@ -70,11 +70,14 @@ public class CartController extends HttpServlet {
 			}
 			// REMOVE FROM CART
 			case "removeFromCart": {
+				//Item item_by_id = dao.selectItemById(Integer.parseInt(request.getParameter("id")));
 				ArrayList<Item> cartItems = (ArrayList<Item>) request.getSession().getAttribute("cartItems");
 				for(Item item : cartItems) {
-					if(item.getItem_quantity() > 1) 
+					if(item.getItem_quantity() > 1) {
 						item.setItem_quantity(item.getItem_quantity()-1);
-					else if(item.getItem_quantity() == 1)
+						break;
+					}	
+					else //(item.getItem_quantity() == 1)
 						((ArrayList<Item>)request.getSession().getAttribute("cartItems")).remove(Integer.parseInt(request.getParameter("id")));
 						break;
 				}
